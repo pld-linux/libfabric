@@ -8,13 +8,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-%define	subver	rc1
+%define	subver	rc2
 Version:	1.0.0
-Release:	1
+Release:	0.%{subver}.1
 License:	BSD or GPL v2
 Group:		Libraries
-Source0:	https://www.openfabrics.org/downloads/ofi/%{name}-%{version}-%{subver}.tar.bz2
-# Source0-md5:	aea309fefa9a3ef40f935a647bfa1691
+Source0:	https://www.openfabrics.org/downloads/ofi/%{name}-%{version}%{subver}.tar.bz2
+# Source0-md5:	e26d54304ca902127da9556500edb736
 Patch0:		%{name}-missing.patch
 URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.57
@@ -59,7 +59,7 @@ Static libfabric library.
 Statyczna biblioteka libfabric.
 
 %prep
-%setup -q -n %{name}-%{version}-%{subver}
+%setup -q -n %{name}-%{version}%{subver}
 %patch0 -p1
 
 %build
