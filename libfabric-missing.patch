@@ -527,13 +527,13 @@
 +\f[C]fi_eq\f[](3), \f[C]fi_rma\f[](3)
 +.SH AUTHORS
 +OpenFabrics.
---- libfabric-1.0.0-rc1/Makefile.am.orig	2015-02-02 06:11:53.000000000 +0100
-+++ libfabric-1.0.0-rc1/Makefile.am	2015-02-21 08:59:52.938472096 +0100
-@@ -280,6 +280,7 @@
+--- libfabric-1.0.0/Makefile.am.orig	2015-06-15 22:08:31.305992225 +0200
++++ libfabric-1.0.0/Makefile.am	2015-06-16 16:00:38.483292669 +0200
+@@ -317,6 +317,7 @@
+ endif HAVE_DIRECT
  
  real_man_pages = \
-         man/fabric.7 \
 +        man/fi_atomic.3 \
-         man/fi_av.3 \
-         man/fi_cm.3 \
-         man/fi_cntr.3 \
+         man/man3/fi_av.3 \
+         man/man3/fi_cm.3 \
+         man/man3/fi_cntr.3 \
