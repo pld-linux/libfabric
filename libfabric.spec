@@ -1,3 +1,4 @@
+# TODO: proprietary providers (cray/gni, mxm)
 #
 # Conditional build:
 %bcond_with	psm	# infinipath-psm provider
@@ -8,12 +9,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-Version:	1.1.1
-Release:	2
+Version:	1.2.0
+Release:	1
 License:	BSD or GPL v2
 Group:		Libraries
 Source0:	https://www.openfabrics.org/downloads/ofi/%{name}-%{version}.tar.bz2
-# Source0-md5:	c5f86da66ffe6685d3413ebf0498c563
+# Source0-md5:	e4ccb6b3abc1a9c13e9ad066e6c14dc3
+Patch0:		%{name}-sh.patch
 URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.11
@@ -38,6 +40,9 @@ Summary:	Development files for libfabric library
 Summary(pl.UTF-8):	Pliki programistyczne biblioteki libfabric
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	libibverbs-devel
+Requires:	libnl-devel >= 3.2
+Requires:	librdmacm-devel
 
 %description devel
 Header files for libfabric library.
@@ -59,6 +64,7 @@ Statyczna biblioteka libfabric.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -77,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libfabric.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -93,9 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libfabric.so
-%{_libdir}/libfabric.la
 %{_includedir}/rdma/fabric.h
 %{_includedir}/rdma/fi_*.h
+%{_pkgconfigdir}/libfabric.pc
 %{_mandir}/man3/fi_*.3*
 %{_mandir}/man7/fabric.7*
 %{_mandir}/man7/fi_*.7*
