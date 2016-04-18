@@ -1,11 +1,11 @@
---- libfabric-1.2.0/prov/gni/configure.m4.orig	2016-01-07 18:18:21.000000000 +0100
-+++ libfabric-1.2.0/prov/gni/configure.m4	2016-01-09 08:48:39.320641547 +0100
-@@ -40,7 +40,7 @@
+--- libfabric-1.3.0/prov/gni/configure.m4.orig	2016-04-18 20:16:46.672463044 +0200
++++ libfabric-1.3.0/prov/gni/configure.m4	2016-04-18 20:18:22.455792357 +0200
+@@ -45,7 +45,7 @@
+                                   gni_LDFLAGS="$CRAY_ALPS_UTIL_LIBS $gni_LDFLAGS"
+                                  ],
                                   [alps_util_happy=0])
- 	       ])
- 
--       gni_path_to_gni_pub=${CRAY_GNI_HEADERS_CFLAGS:2}
-+       gni_path_to_gni_pub=${CRAY_GNI_HEADERS_CFLAGS#-I}
+-               gni_path_to_gni_pub=${CRAY_GNI_HEADERS_CFLAGS:2}
++               gni_path_to_gni_pub=${CRAY_GNI_HEADERS_CFLAGS#-I}
  dnl looks like we need to get rid of some white space
-        gni_path_to_gni_pub=${gni_path_to_gni_pub%?}/gni_pub.h
+                gni_path_to_gni_pub=${gni_path_to_gni_pub%?}/gni_pub.h
  
