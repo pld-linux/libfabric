@@ -1,4 +1,6 @@
-# TODO: proprietary providers (cray/gni, mxm)
+# TODO:
+# - proprietary providers (cray/gni, mxm)
+# - psm2
 #
 # Conditional build:
 %bcond_with	psm	# infinipath-psm provider
@@ -9,13 +11,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-Version:	1.3.0
+Version:	1.4.1
 Release:	1
 License:	BSD or GPL v2
 Group:		Libraries
 #Source0Download: https://github.com/ofiwg/libfabric/releases
 Source0:	https://github.com/ofiwg/libfabric/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	fa678d57a93796a59f618a1cd79ac1a7
+# Source0-md5:	017a4b9d88ebdf3944c6e7ae22fed398
 Patch0:		%{name}-sh.patch
 URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.60
@@ -95,10 +97,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING README
+%doc AUTHORS COPYING NEWS.md README
 %attr(755,root,root) %{_bindir}/fi_info
+%attr(755,root,root) %{_bindir}/fi_pingpong
+%attr(755,root,root) %{_bindir}/fi_strerror
 %attr(755,root,root) %{_libdir}/libfabric.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libfabric.so.1
+%{_mandir}/man1/fi_info.1*
+%{_mandir}/man1/fi_pingpong.1*
+%{_mandir}/man1/fi_strerror.1*
 
 %files devel
 %defattr(644,root,root,755)
