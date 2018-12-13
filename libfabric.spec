@@ -11,13 +11,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-Version:	1.6.0
+Version:	1.6.2
 Release:	1
 License:	BSD or GPL v2
 Group:		Libraries
 #Source0Download: https://github.com/ofiwg/libfabric/releases
 Source0:	https://github.com/ofiwg/libfabric/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	03482ff7db8b4760228a858c404e58aa
+# Source0-md5:	f0e7c6062e91706f9326e78a62bacd77
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-cpu.patch
 URL:		https://github.com/ofiwg/libfabric

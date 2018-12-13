@@ -1,11 +1,11 @@
---- libfabric-1.6.0/prov/psm2/configure.m4.orig	2018-02-12 17:32:15.000000000 +0100
-+++ libfabric-1.6.0/prov/psm2/configure.m4	2018-04-27 22:32:17.177370643 +0200
+--- libfabric-1.6.2/prov/psm2/configure.m4.orig	2018-12-13 19:41:32.489157106 +0100
++++ libfabric-1.6.2/prov/psm2/configure.m4	2018-12-13 19:48:42.749152193 +0100
 @@ -9,7 +9,7 @@
  dnl
  AC_DEFUN([FI_PSM2_CONFIGURE],[
  	 # Determine if we can support the psm2 provider
--	 psm2_ARCH=`uname -p | sed -e 's,\(i[456]86\|athlon$$\),i386,'`
-+	 psm2_ARCH=$(echo $host_cpu | sed -e 's,\(i[456]86\|athlon$$\),i386,')
+-	 psm2_ARCH=`uname -m | sed -e 's,\(i[456]86\|athlon$$\),i386,'`
++	 psm2_ARCH=$(echo $host_cpu | sed -e 's,\(i[[456]]86\|athlon$$\),i386,')
  	 AM_CONDITIONAL([HAVE_PSM2_X86_64], [test x$psm2_ARCH = xx86_64])
  	 AC_SUBST([HAVE_PSM2_X86_64])
  	 AC_SUBST([psm2_ARCH])
