@@ -1,6 +1,10 @@
 # TODO:
-# - proprietary providers (cray/gni, mxm)
-# - psm2
+# - cuda support
+# - level_zero (--with-ze, https://github.com/oneapi-src/level-zero + libdrm-devel)
+# - gdrcopy (https://github.com/NVIDIA/gdrcopy, requires cuda)
+# - rocr (https://github.com/RadeonOpenCompute/ROCR-Runtime)
+# - proprietary providers (cray/gni...)
+# - psm2 (https://github.com/cornelisnetworks/opa-psm2)
 #
 # Conditional build:
 %bcond_with	psm	# infinipath-psm provider
@@ -11,15 +15,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-Version:	1.7.1
+Version:	1.14.0
 Release:	1
 License:	BSD or GPL v2
 Group:		Libraries
 #Source0Download: https://github.com/ofiwg/libfabric/releases
 Source0:	https://github.com/ofiwg/libfabric/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	82d2592fcf251da379b4446c4b5e356b
-Patch0:		%{name}-sh.patch
-Patch1:		%{name}-cpu.patch
+# Source0-md5:	697803f02ef79eca6dad59e7e65939fe
 URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.11
@@ -68,8 +70,6 @@ Statyczna biblioteka libfabric.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -79,6 +79,9 @@ Statyczna biblioteka libfabric.
 %{__automake}
 %configure \
 	%{!?with_psm:--disable-psm} \
+%ifnarch %{x8664} x32
+	--disable-psm3 \
+%endif
 	--disable-silent-rules
 %{__make}
 
