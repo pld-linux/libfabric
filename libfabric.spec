@@ -1,16 +1,27 @@
 # TODO:
 # - cuda support
 # - level_zero (--with-ze, https://github.com/oneapi-src/level-zero + libdrm-devel)
+# - AWS Neuron (--with-neuron, nrt/nrt.h
 # - gdrcopy (https://github.com/NVIDIA/gdrcopy, requires cuda)
 # - rocr (https://github.com/RadeonOpenCompute/ROCR-Runtime)
 # - proprietary providers (cray/gni...)
+# - bgq (hwi/include/bqc/MU_Descriptor.h)
 # - psm2 (https://github.com/cornelisnetworks/opa-psm2)
 #
 # Conditional build:
-%bcond_with	psm	# infinipath-psm provider
+%bcond_without	opx	# OPX provider
+%bcond_with	psm	# PSM (infinipath-psm) provider
+%bcond_without	psm3	# PSM3 provider
 #
+%ifnarch %{x8664} aarch64
+# structures are full of assumptions about 64-bit [u]intptr_t and size_t
+%undefine	with_opx
+%endif
 %ifnarch %{ix86} %{x8664}
 %undefine	with_psm
+%endif
+%ifnarch %{x8664} x32
+%undefine	with_psm3
 %endif
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
@@ -26,10 +37,20 @@ URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.11
 %{?with_psm:BuildRequires:	infinipath-psm-devel >= 3.1}
+# for efa, psm3, usnic, verbs
 BuildRequires:	libibverbs-devel
+# for usnic
 BuildRequires:	libnl-devel >= 3.2
+# for verbs
 BuildRequires:	librdmacm-devel
 BuildRequires:	libtool >= 2:2
+%if %{with opx} || %{with psm3}
+BuildRequires:	libuuid-devel
+%endif
+%if %{with psm3}
+# for psm2, psm3
+BuildRequires:	numactl-devel
+%endif
 Conflicts:	fabtests < 1.1.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -72,20 +93,15 @@ Statyczna biblioteka libfabric.
 %setup -q
 
 %build
-# "opx" provides structures are full of assumptions about 64-bit [u]intptr_t and size_t
 %{__libtoolize}
 %{__aclocal} -I config
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure \
-%ifnarch %{x8664} aarch64
-	--disable-opx \
-%endif
+	%{!?with_opx:--disable-opx} \
 	%{!?with_psm:--disable-psm} \
-%ifnarch %{x8664} x32
-	--disable-psm3 \
-%endif
+	%{!?with_psm3:--disable-psm3} \
 	--disable-silent-rules
 %{__make}
 
