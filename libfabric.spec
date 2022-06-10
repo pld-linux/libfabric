@@ -15,13 +15,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-Version:	1.14.0
+Version:	1.15.1
 Release:	1
 License:	BSD or GPL v2
 Group:		Libraries
 #Source0Download: https://github.com/ofiwg/libfabric/releases
 Source0:	https://github.com/ofiwg/libfabric/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	697803f02ef79eca6dad59e7e65939fe
+# Source0-md5:	0fa59b48415fd1e24330da0869808937
 URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.11
@@ -72,12 +72,16 @@ Statyczna biblioteka libfabric.
 %setup -q
 
 %build
+# "opx" provides structures are full of assumptions about 64-bit [u]intptr_t and size_t
 %{__libtoolize}
 %{__aclocal} -I config
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure \
+%ifnarch %{x8664} aarch64
+	--disable-opx \
+%endif
 	%{!?with_psm:--disable-psm} \
 %ifnarch %{x8664} x32
 	--disable-psm3 \
