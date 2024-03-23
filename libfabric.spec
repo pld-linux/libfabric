@@ -1,7 +1,10 @@
 # TODO:
+# - xpmem support (--enable-xpmem, https://github.com/hpc/xpmem)
 # - cuda support
 # - level_zero (--with-ze, https://github.com/oneapi-src/level-zero + libdrm-devel)
-# - AWS Neuron (--with-neuron, nrt/nrt.h
+# - AWS Neuron (--with-neuron, nrt/nrt.h)
+# - SynapseAI (--with-synapseai, habanalabs/synapse_api.h)
+# - lttng (--with-lttng, BR: lttng-ust-devel)
 # - gdrcopy (https://github.com/NVIDIA/gdrcopy, requires cuda)
 # - rocr (https://github.com/RadeonOpenCompute/ROCR-Runtime)
 # - proprietary providers (cray/gni...)
@@ -26,13 +29,13 @@
 Summary:	User-space RDMA Fabric interface library
 Summary(pl.UTF-8):	Biblioteka interfejsu przestrzeni użytkownika RDMA Fabric
 Name:		libfabric
-Version:	1.15.1
+Version:	1.20.1
 Release:	1
 License:	BSD or GPL v2
 Group:		Libraries
 #Source0Download: https://github.com/ofiwg/libfabric/releases
 Source0:	https://github.com/ofiwg/libfabric/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	0fa59b48415fd1e24330da0869808937
+# Source0-md5:	b60abb57665bdd583bfaedb4a9e859e8
 URL:		https://github.com/ofiwg/libfabric
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.11
@@ -44,6 +47,7 @@ BuildRequires:	libnl-devel >= 3.2
 # for verbs
 BuildRequires:	librdmacm-devel
 BuildRequires:	libtool >= 2:2
+BuildRequires:	liburing-devel >= 2.1
 %if %{with opx} || %{with psm3}
 BuildRequires:	libuuid-devel
 %endif
@@ -137,6 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libfabric.so
 %{_includedir}/rdma/fabric.h
 %{_includedir}/rdma/fi_*.h
+%{_includedir}/rdma/providers
 %{_pkgconfigdir}/libfabric.pc
 %{_mandir}/man3/fi_*.3*
 %{_mandir}/man7/fabric.7*
